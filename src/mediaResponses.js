@@ -2,6 +2,29 @@ const fs = require('fs');
 const { request } = require('http');
 const path = require('path');
 
+function getChunk(response, start, end){
+    const chunksize = (end - start) + 1;
+
+        response.writeHead(206, {
+            'Content-Range' : `bytes ${start}-${end}/${total}`,
+            'Accept-Ranges': 'bytes',
+            'Content-Length': chunksize,
+            'Content-Type': type,
+        });
+}
+
+function openFileStream(response, file, start, end){
+    const stream = fs.createReadStream(file, {start, end});
+
+        stream.on('open', () => {
+            stream.pipe(response);
+        });
+        stream.on('error', (StreamErr) => {
+            response.end(StreamErr);
+        });
+        return stream;
+}
+
 function loadFile(request, response, filename, type){
     const file = path.resolve(__dirname, filename);
 
@@ -30,24 +53,8 @@ function loadFile(request, response, filename, type){
             start = end - 1;
         }
 
-        const chunksize = (end - start) + 1;
-
-        response.writeHead(206, {
-            'Content-Range' : `bytes ${start}-${end}/${total}`,
-            'Accept-Ranges': 'bytes',
-            'Content-Length': chunksize,
-            'Content-Type': type,
-        });
-
-        const stream = fs.createReadStream(file, {start, end});
-
-        stream.on('open', () => {
-            stream.pipe(response);
-        });
-        stream.on('error', (StreamErr) => {
-            response.end(StreamErr);
-        });
-        return stream;
+        getChunk(response, start, end);
+        openFileStream(response, file, start, end);
     });
 }
 
