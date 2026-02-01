@@ -15,6 +15,14 @@ const onRequest = (request,response) => {
             mediaHandler.getParty(request, response);
             break;
 
+        case '/page2':
+            mediaHandler.getBling(request, response);
+            break;
+
+        case '/page3':
+            mediaHandler.getBirdy(request, response);
+            break;
+
         default:
             htmlHandler.getIndex(request, response);
             break;
@@ -22,5 +30,5 @@ const onRequest = (request,response) => {
 };
 
 http.createServer(onRequest).listen(port, () => {
-    console.log(`Listening on 127.0.0.1:${port}`);
+    //console.log(`Listening on 127.0.0.1:${port}`);
 });
