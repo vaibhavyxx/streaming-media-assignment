@@ -56,11 +56,9 @@ function loadFile(request, response, filename, type){
         openFileStream(response, file, start, end);
     });
 }
-
 const getParty = (request, response) => {
     loadFile(request, response,'../client/party.mp4', 'video/mp4');
 };
-
 const getBirdy = (request, response) => {
     loadFile(request, response, '../client/bird.mp4', 'video/mp4');
 };
