@@ -2,7 +2,7 @@ const fs = require('fs');
 const { request } = require('http');
 const path = require('path');
 
-function getChunk(response, start, end){
+function getChunk(response, start, end, total, type){
     const chunksize = (end - start) + 1;
 
         response.writeHead(206, {
@@ -53,7 +53,7 @@ function loadFile(request, response, filename, type){
             start = end - 1;
         }
 
-        getChunk(response, start, end);
+        getChunk(response, start, end, total, type);
         openFileStream(response, file, start, end);
     });
 }
