@@ -1,5 +1,4 @@
 const fs = require('fs');
-const { request } = require('http');
 const index = fs.readFileSync(`${__dirname}/../client/client.html`);
 const second = fs.readFileSync(`${__dirname}/../client/client2.html`);
 const third = fs.readFileSync(`${__dirname}/../client/client3.html`);
